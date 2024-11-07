@@ -1,124 +1,122 @@
 // Global variables
-let mainRadius = 150; // Radius of the main circle
-let numCircles = 280; // This works well for screens up to 98 inches in size
-let spacingX = mainRadius * 2 + 10; // Ensure circles are at least 10px apart horizontally
-let spacingY = mainRadius * 2 + 10; // Ensure circles are spaced vertically based on their size + extra space
-let startX = 100; // Starting x position cutting the first circlePattern, which makes it harder to notice the diagonal column design
-let startY = 100; // Starting y position to accommodate multiple rows
-let yStep = -20; // Prevents patterns from being built in a straight line vertically
-let xStep = 50; // Prevents patterns from being built in a straight line horizontally
-let timeOffset = 2; // Offset for animated noise
+let mainRadius = 150; // Radius of each main circle in the pattern
+let numCircles = 280; // Total number of circles to be drawn, ideal for large screens
+let spacingX = mainRadius * 2 + 10; // Horizontal spacing between circles (including 10px padding)
+let spacingY = mainRadius * 2 + 10; // Vertical spacing between circles (including 10px padding)
+let startX = 100; // Initial x position to start the pattern, adjusted for aesthetic spacing
+let startY = 100; // Initial y position to start the pattern
+let yStep = -20; // Vertical shift for each row to prevent grid alignment
+let xStep = 50; // Horizontal shift for each column to prevent grid alignment
+let timeOffset = 2; // Offset for animating noise-based movement of circles
 
-let dotSize = 5; // declare dotsize for latter variation
+let dotSize = 5; // Initial size for dots in circles, used for scaling in patterns
 
-let predefinedColors; // predefine for latter initialization
-let colorArrays; // variation ring's color
-
+let predefinedColors; // Array to hold a set of colors for the circles, initialized in setup()
+let colorArrays; // Stores unique color arrays for each circle's inner patterns
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  colorMode(HSB);  // Set colour mode to HSB
+  createCanvas(windowWidth, windowHeight); // Set canvas to window dimensions
+  colorMode(HSB);  // Use HSB color mode for smoother color transitions
 
-  // Predefined colours before drawing the shapes
+  // Initialize an array of predefined colors
   predefinedColors = [
-    color(0, 0, 0),
-    color(280, 100, 100),
-    color(0, 100, 100),
-    color(210, 100, 100),
-    color(120, 100, 50),
-    color(30, 100, 100)
+    color(0, 0, 0),         
+    color(280, 100, 100),    
+    color(0, 100, 100),      
+    color(210, 100, 100),    
+    color(120, 100, 50),    
+    color(30, 100, 100)      
   ];
-  colorArrays = Array(numCircles).fill([...predefinedColors]); // create different arrays for innercircles
+  
+  // Assign each circle a copy of the predefined color set
+  colorArrays = Array(numCircles).fill([...predefinedColors]);
 }
 
 function draw() {
-  background('teal');
+  background('teal'); 
 
-  timeOffset += 0.01; // Slower increment for smoother animation
-  let ifShuffle = false //shuffle the color layout of circles based on the time frame
+  timeOffset += 0.01; // Increment time offset for smoother, slower animations
+  let ifShuffle = false; // Flag for shuffling colors
 
+  // Shuffle predefined colors at a set interval (every 10 frames)
   if(frameCount % 10 == 0){
-    predefinedColors = shuffle(predefinedColors) //make sure it defines color on certain frequency
-    ifShuffle = true;
+    predefinedColors = shuffle(predefinedColors);
+    ifShuffle = true; // Indicate that colors should be reshuffled
   } 
-  // Loop to draw the patterns at different x and y positions
+  
+  // Loop to draw each circle pattern in a grid
   for (let i = 0; i < numCircles; i++) {
+    // Shuffle the color array for each circle if the shuffle flag is set
     if(ifShuffle){
-      colorArrays[i] = shuffle(colorArrays[i])
+      colorArrays[i] = shuffle(colorArrays[i]);
     }
-    let row = floor(i / 49); // Determine row position
-    let col = i % 49; // Determine column position
-    let noiseX = noise(col * 2, row * 0.1, timeOffset); // Noise for x position
-    let noiseY = noise(col * 0.1 + 100, row * 0.1 + 100, timeOffset); // Noise for y position
-    let x = startX + col * spacingX - row * xStep + noiseX * 50; // Adjust x position with noise
-    let y = startY + row * spacingY + col * yStep + noiseY * 50; // Adjust y position with noise
+    
+    let row = floor(i / 49); // Calculate row based on circle index
+    let col = i % 49; // Calculate column based on circle index
 
-    // Random HSB color influenced by noise
+    // Generate noise-based x and y offsets for organic movement
+    let noiseX = noise(col * 2, row * 0.1, timeOffset);
+    let noiseY = noise(col * 0.1 + 100, row * 0.1 + 100, timeOffset);
+    let x = startX + col * spacingX - row * xStep + noiseX * 50; // x position with noise
+    let y = startY + row * spacingY + col * yStep + noiseY * 50; // y position with noise
+
+    // Generate HSB color values based on noise for variation
     let hue = noise(col * 0.05, row * 0.05) * 360;
     let saturation = noise(row * 0.05, col * 0.05 + 50) * 50 + 50;
     let brightness = noise(col * 0.1, row * 0.1 + 100) * 20 + 80;
 
-    // Only 1 out of 9 circles will have the zigzag pattern
+    // Define a zigzag pattern for every fourth circle
     let isZigzag = (i % 4 === 0);
 
-    let if_shuffle = random();
-    let pattern = new CirclePattern(x, y, mainRadius, hue, saturation, brightness, isZigzag, i,colorArrays[i]);
+    // Create and draw a CirclePattern instance
+    let pattern = new CirclePattern(x, y, mainRadius, hue, saturation, brightness, isZigzag, i, colorArrays[i]);
     pattern.draw(); // Draw each circle pattern
   }
 }
 
 class CirclePattern {
-  constructor(x, y, mainRadius, hue, saturation, brightness, isZigzag, index,predefinedColors) {
-    this.x = x;
-    this.y = y;
-    this.mainRadius = mainRadius;
-    this.hue = hue;
-    this.saturation = saturation;
-    this.brightness = brightness;
-    this.isZigzag = isZigzag;
-    this.index = index; // Store index for unique rotation
-
-    this.innerColors = predefinedColors.slice(0, 3);
+  constructor(x, y, mainRadius, hue, saturation, brightness, isZigzag, index, predefinedColors) {
+    this.x = x; // x position
+    this.y = y; // y position
+    this.mainRadius = mainRadius; // Radius of main circle
+    this.hue = hue; // HSB color: hue
+    this.saturation = saturation; // HSB color: saturation
+    this.brightness = brightness; // HSB color: brightness
+    this.isZigzag = isZigzag; // Boolean to determine if zigzag pattern is applied
+    this.index = index; // Unique index for each circle
+    this.innerColors = predefinedColors.slice(0, 3); // Three colors for inner circle patterns
   }
 
   drawDotsInCircle() {
-    let numRings = 7;
-   
-    
-    // Calculate rotation based on noise
+    let numRings = 7; // Number of concentric rings of dots
+
+    // Calculate rotation based on noise, creating organic animation
     let rotationNoise = noise(this.index * 0.1, timeOffset) * TWO_PI * 2;
     
     push(); // Save current transformation state
-    translate(this.x, this.y);
-    rotate(rotationNoise); // Apply rotation
-    
-    // Draw concentric rings of dots
+    translate(this.x, this.y); // Move to circle's position
+    rotate(rotationNoise); // Rotate circle for dynamic effect
+
+    // Loop to draw concentric rings of dots
     for (let ring = 1; ring < numRings; ring++) {
-      let radius = ring * this.mainRadius / numRings;
-      let numDots = floor(TWO_PI * radius / (dotSize * 1.2));
+      let radius = ring * this.mainRadius / numRings; // Radius of each ring
+      let numDots = floor(TWO_PI * radius / (dotSize * 1.2)); // Dots per ring
 
+      // Loop to place dots along each ring
       for (let i = 0; i < numDots; i++) {
-        let angle = i * TWO_PI / numDots;
-        let dotX = radius * cos(angle);
-        let dotY = radius * sin(angle);
+        let angle = i * TWO_PI / numDots; // Angle for each dot
+        let dotX = radius * cos(angle); // x position of dot
+        let dotY = radius * sin(angle); // y position of dot
 
+        // Dynamic dot size using noise for varied appearance
         let dynamicDotSize = map(
-          noise(
-            this./* The `index` parameter in the `CirclePattern` class constructor is used to store the
-            index of each circle pattern instance. This index can be used for various purposes
-            within the class methods. In the provided code, the `index` is used for the
-            following purposes: */
-            index * 0.3, 
-            ring * 0.2, 
-            i * 0.1 + timeOffset
-          ),
-          0, 1,  // Input range (noise output)
-          1, 27  // Desired output range
+          noise(this.index * 0.3, ring * 0.2, i * 0.1 + timeOffset),
+          0, 1, 1, 27 // Map noise output to desired size range
         );
 
-        noStroke();
-        fill(this.hue, this.saturation, this.brightness);
-        circle(dotX, dotY, dynamicDotSize);
+        noStroke(); 
+        fill(this.hue, this.saturation, this.brightness); 
+        circle(dotX, dotY, dynamicDotSize); // Draw dot
       }
     }
     
@@ -126,10 +124,10 @@ class CirclePattern {
   }
 
   drawZigzagPattern() {
-    let outerRadius = this.mainRadius * 0.9;
-    let innerRadius = outerRadius * 2 / 3;
+    let outerRadius = this.mainRadius * 0.9; // Outer radius for zigzag pattern
+    let innerRadius = outerRadius * 2 / 3; // Inner radius for zigzag
 
-    // Calculate rotation based on noise
+    // Calculate rotation based on noise for dynamic effect
     let rotationNoise = noise(this.index * 0.1 + 1000, timeOffset) * TWO_PI * 2;
 
     // Draw the yellow-filled circle
@@ -137,68 +135,69 @@ class CirclePattern {
     noStroke();
     circle(this.x, this.y, this.mainRadius * 2);
 
-    push(); // Save current transformation state
-    translate(this.x, this.y);
+    push(); // Save transformation state
+    translate(this.x, this.y); // Move to circle's position
     rotate(rotationNoise); // Apply rotation
 
-    // Set up the red zigzag line
+    // Set up red zigzag line
     stroke('red');
     strokeWeight(3);
-
     let angle = 0;
-    let angleStep = radians(3);
-    let numZigzags = 120;
+    let angleStep = radians(3); // Step between zigzag points
+    let numZigzags = 120; // Number of zigzag points
 
-    beginShape();
+    beginShape(); // Start zigzag shape
     for (let i = 0; i < numZigzags; i++) {
-      let innerX = innerRadius * cos(angle);
-      let innerY = innerRadius * sin(angle);
-      vertex(innerX, innerY);
+      let innerX = innerRadius * cos(angle); // x position on inner radius
+      let innerY = innerRadius * sin(angle); // y position on inner radius
+      vertex(innerX, innerY); // Define vertex
 
-      angle += angleStep;
+      angle += angleStep; // Increment angle
 
-      let outerX = outerRadius * cos(angle);
-      let outerY = outerRadius * sin(angle);
-      vertex(outerX, outerY);
+      let outerX = outerRadius * cos(angle); // x position on outer radius
+      let outerY = outerRadius * sin(angle); // y position on outer radius
+      vertex(outerX, outerY); // Define vertex
 
-      angle += angleStep;
+      angle += angleStep; // Increment angle
     }
-    endShape();
+    endShape(); // End zigzag shape
     
     pop(); // Restore transformation state
   }
 
   drawInnerCircles() {
-    let smallRadius = 15;
-    let numCircles = 9;
+    let smallRadius = 15; // Radius for smallest inner circle
+    let numCircles = 9; // Number of inner circles
 
-    // Draw the smallest gold circle at the center
+    // Draw a small central gold circle
     fill("gold");
     noStroke();
     circle(this.x, this.y, smallRadius * 2);
 
-    // Draw 9 circles with increasing radius
+    // Draw nine larger circles with increasing radius
     strokeWeight(6);
     noFill();
 
     for (let i = 0; i < numCircles; i++) {
-      let currentRadius = smallRadius + i * 5;
-      stroke(this.innerColors[i % 3]);
-      circle(this.x, this.y, currentRadius * 2);
+      let currentRadius = smallRadius + i * 5; // Increase radius for each circle
+      stroke(this.innerColors[i % 3]); // Color from predefined color array
+      circle(this.x, this.y, currentRadius * 2); // Draw circle
     }
   }
 
   draw() {
     if (this.isZigzag) {
-      this.drawZigzagPattern();
+      this.drawZigzagPattern(); // Draw zigzag if true
     } else {
-      this.drawDotsInCircle();
+      this.drawDotsInCircle(); // Otherwise, draw dots
     }
-    this.drawInnerCircles();
+    this.drawInnerCircles(); // Draw inner circles for all patterns
   }
 }
+
+// Adjust canvas size if window is resized
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  background('teal');
-  setup();
+  background('teal'); // Reset background
+  setup(); // Reinitialize setup variables
 }
