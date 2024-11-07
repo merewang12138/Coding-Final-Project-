@@ -108,7 +108,7 @@ class CirclePattern {
         let dotX = radius * cos(angle); // x position of dot
         let dotY = radius * sin(angle); // y position of dot
 
-        // Dynamic dot size using noise for varied appearance
+        // Dynamic dot size allocation with noise disturbance that are scaled to the range of 1-27
         let dynamicDotSize = map(
           noise(this.index * 0.3, ring * 0.2, i * 0.1 + timeOffset),
           0, 1, 1, 27 // Map noise output to desired size range
