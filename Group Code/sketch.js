@@ -1,18 +1,18 @@
 // Global variables
-let mainRadius = 120; // Radius of the main circle
-let numCircles = 150; // This works well for screens up to 98 inches in size
+let mainRadius = 150; // Radius of the main circle
+let numCircles = 280; // This works well for screens up to 98 inches in size
 let spacingX = mainRadius * 2 + 10; // Ensure circles are at least 10px apart horizontally
 let spacingY = mainRadius * 2 + 10; // Ensure circles are spaced vertically based on their size + extra space
 let startX = 100; // Starting x position cutting the first circlePattern, which makes it harder to notice the diagonal column design
 let startY = 100; // Starting y position to accommodate multiple rows
 let yStep = -20; // Prevents patterns from being built in a straight line vertically
 let xStep = 50; // Prevents patterns from being built in a straight line horizontally
-let timeOffset = 0; // Offset for animated noise
+let timeOffset = 2; // Offset for animated noise
 
-let dotSize = 5; // declare dotsize for latter varietion
+let dotSize = 5; // declare dotsize for latter variation
 
 let predefinedColors; // predefine for latter initialization
-
+let colorArrays; // variation ring's color
 
 
 function setup() {
@@ -28,19 +28,24 @@ function setup() {
     color(120, 100, 50),
     color(30, 100, 100)
   ];
+  colorArrays = Array(numCircles).fill([...predefinedColors]); // create different arrays for innercircles
 }
 
 function draw() {
   background('teal');
 
   timeOffset += 0.01; // Slower increment for smoother animation
+  let ifShuffle = false //shuffle the color layout of circles based on the time frame
 
   if(frameCount % 10 == 0){
-    predefinedColors = shuffle(predefinedColors)
-  } //make sure it defines color on certain frequency
-
+    predefinedColors = shuffle(predefinedColors) //make sure it defines color on certain frequency
+    ifShuffle = true;
+  } 
   // Loop to draw the patterns at different x and y positions
   for (let i = 0; i < numCircles; i++) {
+    if(ifShuffle){
+      colorArrays[i] = shuffle(colorArrays[i])
+    }
     let row = floor(i / 49); // Determine row position
     let col = i % 49; // Determine column position
     let noiseX = noise(col * 2, row * 0.1, timeOffset); // Noise for x position
@@ -54,9 +59,10 @@ function draw() {
     let brightness = noise(col * 0.1, row * 0.1 + 100) * 20 + 80;
 
     // Only 1 out of 9 circles will have the zigzag pattern
-    let isZigzag = (i % 9 === 0);
+    let isZigzag = (i % 4 === 0);
 
-    let pattern = new CirclePattern(x, y, mainRadius, hue, saturation, brightness, isZigzag, i,predefinedColors);
+    let if_shuffle = random();
+    let pattern = new CirclePattern(x, y, mainRadius, hue, saturation, brightness, isZigzag, i,colorArrays[i]);
     pattern.draw(); // Draw each circle pattern
   }
 }
@@ -71,8 +77,6 @@ class CirclePattern {
     this.brightness = brightness;
     this.isZigzag = isZigzag;
     this.index = index; // Store index for unique rotation
-
-    
 
     this.innerColors = predefinedColors.slice(0, 3);
   }
