@@ -17,7 +17,7 @@ function setup() {
 
 function draw() {
   background('teal');
-  
+
   timeOffset += 4; // Increment time for noise-based animation
   // Loop to draw the patterns at different x and y positions
    for (let i = 0; i < numCircles; i++) {
@@ -27,6 +27,12 @@ function draw() {
   let noiseY = noise(col * 0.1 + 100, row * 0.1 + 100, timeOffset); // Noise for y position
   let x = startX + col * spacingX - row * xStep + noiseX * 50; // Adjust x position with noise
   let y = startY + row * spacingY + col * yStep + noiseY * 50; // Adjust y position with noise
+
+  // Random HSB color influenced by noise
+  let hue = noise(col * 0.05, row * 0.05) * 360;
+  let saturation = noise(row * 0.05, col * 0.05 + 50) * 60 + 50;
+  let brightness = noise(col * 0.1, row * 0.1 + 100) * 20 + 80;
+
 
   // Only 1 out of 9 circles will have the zigzag pattern
   let isZigzag = (i % 9 === 0);
