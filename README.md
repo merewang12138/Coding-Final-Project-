@@ -26,7 +26,7 @@ Perlin noise and Randomness
 
 4._Inspirations and References_:
 Visual Inspirations: I was inspired by some simple kaleidoscopic animations, 
-example: ![Kaleidoscopic animation](https://img1.picmix.com/output/stamp/normal/7/7/4/2/2282477_b61a5.gif Links to an external site.)
+example: ![Kaleidoscopic animation](https://img1.picmix.com/output/stamp/normal/7/7/4/2/2282477_b61a5.gif)
 Symmetry and everending movement for a sense of depth. The zigzags pattern also added a stronger visual effect on the rotation.
 Technical Inspirations: Perlin noise, noise() function in p5.js is the major fucntion that I used to animate the artwork. The strong randomness on this function made it hard to implement but was fun to play around the scale and other properties.
 
