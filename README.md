@@ -7,11 +7,12 @@ I used Perlin noise to animate the wheels created on the base code,changing some
 
 **Interaction Instructions**
 
-To view the animation,load the page.The animation begins automatically and continues to change without required user interaction.Colors of inner circle also shuffles every few frames.By refreshing the page, each time picked a random color for major inner circles.
+To view the animation, load the page. The animation begins automatically and continues to change without required user interaction. Colors of inner circle also shuffles every few frames.By refreshing the page, each time picked a random color for major inner circles.
 
 **Details of Individual Approach**
  
 1._Chosen Animation Technique_: 
+
 Perlin noise and Randomness
 
 2._Animated Properties_:
@@ -21,6 +22,7 @@ Perlin noise and Randomness
 - Color Variation: Colors shuffle every ten frames, and each circle is assigned a unique color.
 
 3._Compared to Group members_:
+
 Based on what I mentioned in the former section, my group members each took unique approaches to make sure we adapt our animation in distinctive ways.
 
 - Jackie, who is using audio to animate her artwork, animated the size of the radius of inner circle and the color of the dots with music energy level;
@@ -31,6 +33,7 @@ Based on what I mentioned in the former section, my group members each took uniq
 4._Inspirations and References_:
 
 I was visually inspired by some simple kaleidoscopic animations: 
+
 
 Example: 
 ![Kaleidoscopic animation](https://img1.picmix.com/output/stamp/normal/7/7/4/2/2282477_b61a5.gif)
@@ -44,6 +47,7 @@ Technical Inspirations: Perlin noise, noise() function in p5.js is the major fuc
 The base code wasn't changed drastically, I maintained the base shape, and the modification are explained in following sections:
 - Position Offsets: noise value was added in draw() to random offsets to the x and y positions of each wheels.
 - Rotation: Noise-based rotation values are added for calculate both the dot and zigzag patterns, each circle pattern are spinning at different rates and random directions.
-- Dynamic Dot Sizes:After declasing dot size, add fuction to changed the dotsize, and each dot’s size within the concentric rings of a circle varies based on scaling the noise effect.
+- Dynamic Dot Sizes: I declassed the dot size, added fuction to changed the dotsize, and let each dot’s size within the concentric rings of a circle varies based on scaling the noise effect.
 - Color Shuffling and HSB Variance: 
-shuffle() function was used to store randomised color in inner circles, the technique was incorporated reference from the p5 website,[Link Text](https://p5js.org/reference/p5/shuffle/) 'array, is the array to be shuffled, calling shuffle(myArray) will shuffle the elements of myArray;' framecout() was also used：every ten frames, the color scheme of each circle is shuffled from a predefined set. The HSB values are slightly randomis\ed using noise, which adds subtle variations on color of wheels.
+shuffle() function was used to store randomised color in inner circles, the technique was incorporated reference from the p5 website [Link Text](https://p5js.org/reference/p5/shuffle/), ---'array, is the array to be shuffled, calling shuffle(myArray) will shuffle the elements of myArray;' 
+framecount() from p5js was also used：every ten frames, the color scheme of each circle is shuffled from a predefined set. The HSB values are slightly randomis\ed using noise, which adds subtle variations on color of wheels.
