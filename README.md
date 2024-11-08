@@ -50,4 +50,4 @@ The base code wasn't changed drastically, I maintained the base shape, and the m
 - Dynamic Dot Sizes: I declassed the dot size, added fuction to changed the dotsize, and let each dot’s size within the concentric rings of a circle varies based on scaling the noise effect.
 - Color Shuffling and HSB Variance: 
 shuffle() function was used to store randomised color in inner circles, the technique was incorporated reference from the p5 website [Link Text](https://p5js.org/reference/p5/shuffle/), ---'array, is the array to be shuffled, calling shuffle(myArray) will shuffle the elements of myArray;' 
-framecount() from p5js was also used：every ten frames, the color scheme of each circle is shuffled from a predefined set. The HSB values are slightly randomis\ed using noise, which adds subtle variations on color of wheels.
+framecount() from p5.js was also used：every ten frames, the color scheme of each circle is shuffled from a predefined set. The HSB values are slightly randomis\ed using noise, which adds subtle variations on color of wheels.
