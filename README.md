@@ -38,7 +38,7 @@ I was visually inspired by some simple kaleidoscopic animations:
 Example: 
 ![Kaleidoscopic animation](https://img1.picmix.com/output/stamp/normal/7/7/4/2/2282477_b61a5.gif)
 
-The Symmetry and everending movement are created for a aesthetic of depth.The zigzags pattern also added a stronger visual effect on the rotation.
+The Symmetry and everending movement are created for a aesthetic of depth. The zigzags pattern also added a stronger visual effect on the rotation.
 
 Technical Inspirations: Perlin noise, noise() function in p5.js is the major fucntion that I used to animate the artwork. The strong randomness on this function made it hard to implement but was fun to play around the scale and other properties.
 
@@ -49,5 +49,6 @@ The base code wasn't changed drastically, I maintained the base shape, and the m
 - Rotation: Noise-based rotation values are added for calculate both the dot and zigzag patterns, each circle pattern are spinning at different rates and random directions.
 - Dynamic Dot Sizes: I declassed the dot size, added fuction to changed the dotsize, and let each dot’s size within the concentric rings of a circle varies based on scaling the noise effect.
 - Color Shuffling and HSB Variance: 
-shuffle() function was used to store randomised color in inner circles, the technique was incorporated reference from the p5 website [Link Text](https://p5js.org/reference/p5/shuffle/), ---'array, is the array to be shuffled, calling shuffle(myArray) will shuffle the elements of myArray;' 
-framecount() from p5.js was also used：every ten frames, the color scheme of each circle is shuffled from a predefined set. The HSB values are slightly randomis\ed using noise, which adds subtle variations on color of wheels.
+shuffle() function was used to store randomised color in inner circles, the technique was incorporated reference from the p5 website [Link Text](https://p5js.org/reference/p5/shuffle/), ---'array, is the array to be shuffled, calling shuffle(myArray) will shuffle the elements of myArray';
+
+framecount() from p5.js was also used: every ten frames, the color scheme of each circle is shuffled from a predefined set. The HSB values are slightly randomised using noise, which adds subtle variations on color of wheels.
