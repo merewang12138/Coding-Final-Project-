@@ -1,5 +1,5 @@
 # Coding-Final-Project-
-Wheels of fortune recreation
+Wheels of fortune recreation --- An Individual Prototype on base of Group code
 
 **Overview**
 
