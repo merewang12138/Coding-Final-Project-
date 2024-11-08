@@ -9,18 +9,18 @@ let yStep = -20; // Vertical shift for each row to prevent grid alignment
 let xStep = 50; // Horizontal shift for each column to prevent grid alignment
 let timeOffset = 2; // Offset for animating noise-based movement of circles
 
-let dotSize = 5; // Initial size for dots in circles, used for scaling in patterns
+let dotSize = 10; // Initial size for dots in circles, used for scaling in patterns
 
-let predefinedColors; // Array to hold a set of colors for the circles, initialized in setup()
+let predefinedColors; // Array to hold a set of colors for the circles, initialised in setup()
 let colorArrays; // Stores unique color arrays for each circle's inner patterns
 
 function setup() {
   createCanvas(windowWidth, windowHeight); // Set canvas to window dimensions
   colorMode(HSB);  // Use HSB color mode for smoother color transitions
 
-  // Initialize an array of predefined colors
+  // Initialise an array of predefined colors
   predefinedColors = [
-    color(0, 0, 0),         
+    color(50, 0, 0),         
     color(280, 100, 100),    
     color(0, 100, 100),      
     color(210, 100, 100),    
@@ -35,7 +35,7 @@ function setup() {
 function draw() {
   background('teal'); 
 
-  timeOffset += 0.01; // Increment time offset for smoother, slower animations
+  timeOffset += 0.05; // time offset for smooth animations
   let ifShuffle = false; // Flag for shuffling colors
 
   // Shuffle predefined colors at a set interval (every 10 frames)
@@ -54,7 +54,7 @@ function draw() {
     let row = floor(i / 49); // Calculate row based on circle index
     let col = i % 49; // Calculate column based on circle index
 
-    // Generate noise-based x and y offsets for organic movement
+    // Generate noise-based x and y offsets to random the movemrnt
     let noiseX = noise(col * 2, row * 0.1, timeOffset);
     let noiseY = noise(col * 0.1 + 100, row * 0.1 + 100, timeOffset);
     let x = startX + col * spacingX - row * xStep + noiseX * 50; // x position with noise
@@ -65,7 +65,7 @@ function draw() {
     let saturation = noise(row * 0.05, col * 0.05 + 50) * 50 + 50;
     let brightness = noise(col * 0.1, row * 0.1 + 100) * 20 + 80;
 
-    // Define a zigzag pattern for every fourth circle
+    // changed density to define a zigzag pattern for every fourth circle
     let isZigzag = (i % 4 === 0);
 
     // Create and draw a CirclePattern instance
@@ -199,5 +199,5 @@ class CirclePattern {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   background('teal'); // Reset background
-  setup(); // Reinitialize setup variables
+  setup(); // Reinitialise setup variables
 }
